@@ -1,68 +1,43 @@
-<?php
-require('conn.php');
+<!DOCTYPE html>
+<html lang="en">
 
-$username = $_POST['username'];
-$password = $_POST['password'];
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>SabaqWay Login</title>
+</head>
 
-# abc123 = $2y$10$Hf/NF2cb5TAGAaAEhwCTdebHvLgwsGV51TiOAMsPklkqrdCpd7ux6
+<body class="bg-secondary">
+    <br>
+    <div class="container">
+        <div class="shadow-sm p-3 mb-5 bg-white rounded">
+            <h1>SABAQWAY ADMIN LOGIN</h1>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success login">Login</button>
+        </div>
+    </div>
+</body>
+<script>
+    $(".login").click(function() {
+        window.location = "index.php"
+    })
+</script>
 
-if ($username == 'admin') {
-    $sql = "SELECT * FROM admin";
-    $row = $conn->query($sql)->fetch_object();
-    if (password_verify($password, $row->adminpassword)) {
-        $_SESSION['admin'] = 'admin';
-        header('location: admin/');
-    } else {
-        ?>
-        <script>
-            alert('Sorry, invalid username/password!');
-            window.location = './';
-        </script>
-        <?php
-    }
-} elseif ($username == 'staff') {
-    $sql = "SELECT * FROM staff";
-    $row = $conn->query($sql)->fetch_object();
-    if (password_verify($password, $row->staffpassword)) {
-        $_SESSION['staff'] = 'staff';
-        header('location: staff/');
-    } else {
-        ?>
-        <script>
-            alert('Sorry, invalid username/password!');
-            window.location = './';
-        </script>
-        <?php
-    }
-} else {
-    $sql = "SELECT idcustomer, custpassword FROM customer WHERE username = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('s', $username);
-    $stmt->execute();
-    $stmt->store_result();
-    $num_rows = $stmt->num_rows;
-    $stmt->bind_result($idcustomer, $pswd);
-    if ($num_rows == 1) {
-        echo $conn->error;
-        $stmt->fetch();
-        if (password_verify($password, $pswd)) {
-            $_SESSION['idcustomer'] = $idcustomer;
-            header('location: customer/');
-        } else {
-            ?>
-            <script>
-                alert('Sorry, invalid username/password!');
-                window.location = './';
-            </script>
-            <?php
-        }
-    } else {
-        ?>
-        <script>
-            alert('Sorry, invalid username/password!');
-            window.location = './';
-        </script>
-        <?php
-    }
-    $stmt->close();
-}
+</html>

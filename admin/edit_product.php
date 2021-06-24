@@ -1,5 +1,4 @@
 <?php
-include("../conn.php");
 include("check_session.php");
 $id = $_SESSION["edit_product_id"];
 $query = mysqli_query($conn, "SELECT * FROM product WHERE idproduct = '$id'");

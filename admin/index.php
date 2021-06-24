@@ -17,31 +17,15 @@ include("check_session.php");
 </head>
 
 <body>
-    <?php include("navbar.php"); ?>
-    <span class="success_banner"></span>
-    <div class="container content">
-
-    </div>
+<center>
+    <?php
+    include("navbar.php");
+    $menu = 'customer';
+    if (isset($_GET['menu'])) $menu = $_GET['menu'];
+    require "$menu.php";
+    ?>
+</div></center>
 </body>
-<script>
-    $(document).ready(function() {
-        $('.content').load("customer.php")
-        $(".tambah_produk").click(function() {
-            $('.content').load("new_product.php")
-        })
 
-        $(".senarai_pelanggan").click(function() {
-            $('.content').load("customer.php")
-        })
-
-        $(".senarai_produk").click(function() {
-            $('.content').load("product_list.php")
-        })
-
-        $(".prehide").click(function(){
-            $(".success_banner").html("")
-        })
-    })
-</script>
 
 </html>

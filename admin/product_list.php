@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-include("../conn.php");
 include("check_session.php");
 ?>
 <h1>Senarai Produk</h1>

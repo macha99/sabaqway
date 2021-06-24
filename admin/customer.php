@@ -1,82 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<?php
-include("../conn.php");
-include("check_session.php");
-?>
-
 <h1>Senarai Pelanggan</h1>
 <div class="shadow-sm p-3 mb-5 bg-white rounded">
     <table class="table">
-        <thead>
+        <tr>
+            <th>Bil</th>
+            <th>Username</th>
+            <th>Full Name</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+        <?php
+        $bil = 1;
+        $sql = "SELECT * FROM customer ORDER BY username";
+        $result = $conn->query($sql);
+        echo $conn->error;
+        while ($row = $result->fetch_object()) {
+        ?>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nama pengguna</th>
-                <th scope="col">Nama penuh</th>
-                <th scope="col">Alamat</th>
-                <th scope="col">Email</th>
-                <th scope="col">Pilihan</th>
+                <td><?php echo $bil++; ?></td>
+                <td><?php echo $row->username; ?></td>
+                <td><?php echo $row->fullname; ?></td>
+                <td><?php echo $row->address; ?></td>
+                <td><?php echo $row->email; ?></td>
+                <td>
+                    <a href="index.php?resetcus&idcustomer=<?php echo $row->idcustomer; ?>">Reset</a>
+                    |
+                    <a href="index.php?menu=edit_customer&idcustomer=<?php echo $row->idcustomer; ?>">Edit</a>
+                    |
+                    <a href="padam.php?idcustomer=<?php echo $row->idcustomer; ?>">Delete</a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            <?php
-            $i = 1;
-            $q_customer = mysqli_query($conn, "SELECT * FROM customer");
-            if (mysqli_num_rows($q_customer) > 0) {
-                while ($f_customer = mysqli_fetch_assoc($q_customer)) {
-            ?>
-                    <tr>
-                        <th scope="row"><?php echo $i; ?></th>
-                        <td><?php echo $f_customer['username'] ?></td>
-                        <td><?php echo $f_customer['fullname'] ?></td>
-                        <td><?php echo $f_customer['address'] ?></td>
-                        <td><?php echo $f_customer['email'] ?></td>
-                        <td><button class="btn btn-link edit_cus prehide" data-id="<?php echo $f_customer['idcustomer']; ?>">Edit</button> | <button class="btn btn-link delete_cus prehide" data-id="<?php echo $f_customer['idcustomer']; ?>">Delete</button> | <button class="btn btn-link reset_customer" data-name="<?php echo $f_customer['username'] ?>" data-id="<?php echo $f_customer['idcustomer']; ?>">Reset</button></td>
-                    </tr>
-            <?php
-                    $i++;
-                }
-            }
-            ?>
-        </tbody>
+        <?php
+        }
+        ?>
     </table>
-    <script>
-        $(document).ready(function() {
-            $(".delete_cus").click(function() {
-                $.post("engine.php", {
-                    delete_cus: 1,
-                    cus_id: $(this).data("id")
-                }, function(data) {
-                    if (data == "OK") {
-                        $(".success_banner").html("")
-                        $('.content').load("customer.php")
-                    }
-                    console.log(data)
-                })
-            })
-            $(".edit_cus").click(function() {
-                $.post("engine.php", {
-                    edit_cus: 1,
-                    cus_id: $(this).data("id")
-                }, function(data) {
-                    $(".success_banner").html("")
-                    $(".content").load("edit_customer.php")
-                })
-
-            })
-            $(".reset_customer").click(function() {
-                let custname = [$(this).data("name")]
-                $.post("engine.php", {
-                    reset_pass: 1,
-                    customer_id: $(this).data("id")
-                }, function(data) {
-                    if (data == "OK") {
-                        $(".success_banner").html("<div class='shadow-none p-3 mb-5 bg-success rounded'><center><h3>" + custname[0] + " password has been reset</h3></center></div>")
-                    }
-                })
-            })
-        })
-    </script>
 </div>
 
 </html>
